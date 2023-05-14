@@ -267,10 +267,6 @@ $(document).ready(function () {
 
     function send_post() {
 
-        // if (($('#key').length) && ($('#key').val().length != 51)) {
-        //     layer.msg("请输入正确的API-KEY", { icon: 5 });
-        //     return;
-        // }
         var key = ($("#key").length) ? ($("#key").val()) : '';
 
         if (key == "") {
@@ -289,58 +285,8 @@ $(document).ready(function () {
 
         var answer;
 
-        // var loading = layer.msg('正在组织语言，请稍等片刻...', {
-        //     icon: 16,
-        //     shade: 0.4,
-        //     time: false //取消自动关闭
-        // });
-
-        // 这里才是发出请求
         function streaming() {
 
-
-            // var context = (!($("#keep").length) || ($("#keep").prop("checked"))) ? JSON.stringify(contextarray) : '[]';
-            // context = JSON.parse((context || "[]") || []);
-            // var messages = [];
-            // if (context.length > 0) {
-            //     var lastFiveMessages = context.slice(-5);
-            //     for (var i = 0; i < lastFiveMessages.length; i++) {
-            //         messages.push({ 'role': 'user', 'content': lastFiveMessages[i][0].replace(/\n/g, "\\n") });
-            //         messages.push({ 'role': 'assistant', 'content': lastFiveMessages[i][1].replace(/\n/g, "\\n") });
-            //     }
-            // }
-
-            // messages.push({ 'role': 'user', 'content': prompt });
-            // var payload = {
-            //     model: 'gpt-3.5-turbo',
-            //     temperature: 0,
-            //     stream: true,
-            //     messages: messages
-            // };
-
-            // var OPENAI_API_KEY = ($("#key").length) ? ($("#key").val()) : 'sk-replace_with_your_api_key_dude';
-            // var headers = {
-            //     'Authorization': 'Bearer ' + OPENAI_API_KEY,
-            //     'Accept': 'text/event-stream',
-            //     'Content-Type': 'application/json'
-            // };
-
-
-            // console.log(context + "iyzs")
-            // console.log(messages + "iyzs")
-
-
-            // function getFormBody(data) {
-            //     var formBody = new URLSearchParams();
-            //     for (var key in data) {
-            //         formBody.append(key, data[key]);
-            //     }
-            //     return formBody.toString();
-            // }
-
-            // console.log(JSON.stringify(payload))
-
-            // 这里是发出请求
             console.log(sessionId)
 
             // const worker = new SharedWorker('js/worker.js');
@@ -437,17 +383,30 @@ $(document).ready(function () {
                         //    }
                         //}
 
+
+                        if (islastletter) MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
+                        var scrollAuto = false;
+                        const element = document.getElementById('article-wrapper');
+                        if (element.scrollTop + element.clientHeight == element.scrollHeight) {
+                            scrollAuto = true;
+                        }
+
                         //var converter = new showdown.Converter();
                         //newalltext = converter.makeHtml(arr.join("```"));
                         newalltext = mdHtml.render(strforcode);
                         //newalltext = newalltext.replace(/\\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
                         $("#" + answer).html(newalltext);
-                        if (islastletter) MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+
                         //if (document.querySelector("[id='" + answer + "']" + " pre code")) document.querySelectorAll("[id='" + answer + "']" + " pre code").forEach(el => { hljs.highlightElement(el); });
                         $("#" + answer + " pre code").each(function () {
                             $(this).html("<button onclick='copycode(this);' class='codebutton'>复制</button>" + $(this).html());
                         });
-                        document.getElementById("article-wrapper").scrollTop = 100000;
+
+                        if (scrollAuto) {
+                            document.getElementById("article-wrapper").scrollTop = document.getElementById("article-wrapper").scrollHeight // 顶到最前
+                        }
+
                     }, 30);
                 }
                 if (event.data == "[DONE]") {
@@ -514,6 +473,7 @@ $(document).ready(function () {
                     $("#q" + answer).children('pre').text($("#q" + answer).children('pre').text() + prompt[j]);
                 }
                 $("#article-wrapper").append('<li class="article-content" id="' + answer + '"></li>');
+                document.getElementById("article-wrapper").scrollTop = document.getElementById("article-wrapper").scrollHeight // 顶到最前
                 streaming();
             }
         });
