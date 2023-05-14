@@ -388,7 +388,7 @@ $(document).ready(function () {
 
                         var scrollAuto = false;
                         const element = document.getElementById('article-wrapper');
-                        if (element.scrollTop + element.clientHeight == element.scrollHeight) {
+                        if (element.scrollTop + element.clientHeight >= element.scrollHeight - 10) {
                             scrollAuto = true;
                         }
 
