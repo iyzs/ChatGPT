@@ -13,18 +13,22 @@ var defaults = {
     _view: 'html'
 };
 defaults.highlight = function (str, lang) {
-    if (!defaults._highlight || !window.hljs) { return ''; }
+    if (!defaults._highlight || !window.hljs) {
+        return '';
+    }
 
     var hljs = window.hljs;
     if (lang && hljs.getLanguage(lang)) {
         try {
             return hljs.highlight(lang, str).value;
-        } catch (__) { }
+        } catch (__) {
+        }
     }
 
     try {
         return hljs.highlightAuto(str).value;
-    } catch (__) { }
+    } catch (__) {
+    }
 
     return '';
 };
@@ -51,6 +55,7 @@ mdHtml.renderer.rules.heading_open = function (tokens, idx) {
     }
     return '<h' + tokens[idx].hLevel + '>';
 };
+
 function getCookie(name) {
     var cookies = document.cookie.split(';');
     for (var i = 0; i < cookies.length; i++) {
@@ -92,6 +97,9 @@ function switchAiSource() {
     } else if (aiSource === 'source2') {
         aiSourceWork.keepEnable = false;
         aiSourceWork.webEnable = false;
+    } else if (aiSource === 'source3') {
+        aiSourceWork.keepEnable = true;
+        aiSourceWork.webEnable = false;
     } else {
         aiSourceWork.keepEnable = true;
         aiSourceWork.webEnable = true;
@@ -101,7 +109,7 @@ function switchAiSource() {
     localStorage.setItem('keepStatus', $("#keep").get(0).checked);
     localStorage.setItem('webStatus', $("#web").get(0).checked);
     var name = $('#aiSource').get(0).options[$('#aiSource').get(0).selectedIndex].getAttribute('name')
-    layer.msg("切换" + name + "成功", { icon: 6 });
+    layer.msg("切换" + name + "成功", {icon: 6});
 }
 
 function initcode() {
@@ -150,14 +158,14 @@ document.addEventListener("DOMContentLoaded", function () {
     $("#keep").on('click', function () {
         if (!aiSourceWork.keepEnable) {
             $("#keep").get(0).checked = false;
-            layer.msg("当前线路不支持开启连续对话,请切换线路", { icon: 5 });
+            layer.msg("当前线路不支持开启连续对话,请切换线路", {icon: 5});
         }
         localStorage.setItem('keepStatus', $("#keep").get(0).checked);
     });
     $("#web").on('click', function () {
         if (!aiSourceWork.webEnable) {
             $("#web").get(0).checked = false;
-            layer.msg("当前线路不支持开启联网查询,请切换线路", { icon: 5 });
+            layer.msg("当前线路不支持开启联网查询,请切换线路", {icon: 5});
         }
         localStorage.setItem('webStatus', $("#web").get(0).checked);
     });
@@ -244,7 +252,16 @@ $(document).ready(function () {
 
     $("#showlog").click(function () {
         let btnArry = ['已阅'];
-        layer.open({ type: 1, title: '全部对话日志', area: ['80%', '80%'], shade: 0.5, scrollbar: true, offset: [($(window).height() * 0.1), ($(window).width() * 0.1)], content: '<iframe src="chat.txt?' + new Date().getTime() + '" style="width: 100%; height: 100%;"></iframe>', btn: btnArry });
+        layer.open({
+            type: 1,
+            title: '全部对话日志',
+            area: ['80%', '80%'],
+            shade: 0.5,
+            scrollbar: true,
+            offset: [($(window).height() * 0.1), ($(window).width() * 0.1)],
+            content: '<iframe src="chat.txt?' + new Date().getTime() + '" style="width: 100%; height: 100%;"></iframe>',
+            btn: btnArry
+        });
         return false;
     });
 
@@ -270,14 +287,14 @@ $(document).ready(function () {
         var key = ($("#key").length) ? ($("#key").val()) : '';
 
         if (key == "") {
-            layer.msg("请输入邀请码", { icon: 5 });
+            layer.msg("请输入邀请码", {icon: 5});
             return;
         }
 
         var prompt = $("#kw-target").val();
 
         if (prompt == "") {
-            layer.msg("请输入您的问题", { icon: 5 });
+            layer.msg("请输入您的问题", {icon: 5});
             return;
         }
 
@@ -455,7 +472,7 @@ $(document).ready(function () {
                     localStorage.setItem('key', key);
                     sessionId = results.sessionId;
                 } else {
-                    layer.msg(results.msg, { icon: 5 });
+                    layer.msg(results.msg, {icon: 5});
                     if (results.errorCode == 100) {
                         localStorage.removeItem('key');
                     }
@@ -483,7 +500,8 @@ $(document).ready(function () {
 
     function randomString(len) {
         len = len || 32;
-        var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+        /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
         var maxPos = $chars.length;
         var pwd = '';
         for (i = 0; i < len; i++) {
