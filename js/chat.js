@@ -89,7 +89,7 @@ var aiSourceWork = {
     webEnable: true
 };
 
-function switchAiSource() {
+function initAiSource(){
     aiSource = $('#aiSource').val();
     if (aiSource === 'source1') {
         aiSourceWork.keepEnable = true;
@@ -108,6 +108,10 @@ function switchAiSource() {
     $("#web").get(0).checked = aiSourceWork.webEnable ? $("#web").get(0).checked : false
     localStorage.setItem('keepStatus', $("#keep").get(0).checked);
     localStorage.setItem('webStatus', $("#web").get(0).checked);
+}
+
+function switchAiSource() {
+    initAiSource();
     var name = $('#aiSource').get(0).options[$('#aiSource').get(0).selectedIndex].getAttribute('name')
     layer.msg("切换" + name + "成功", {icon: 6});
 }
@@ -181,21 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 初始化线路aiSource和线路工作aiSourceWork
-    aiSource = $('#aiSource').val();
-    if (aiSource === 'source1') {
-        aiSourceWork.keepEnable = true;
-        aiSourceWork.webEnable = false;
-    } else if (aiSource === 'source2') {
-        aiSourceWork.keepEnable = false;
-        aiSourceWork.webEnable = false;
-    } else {
-        aiSourceWork.keepEnable = true;
-        aiSourceWork.webEnable = true;
-    }
-    $("#keep").get(0).checked = aiSourceWork.keepEnable ? $("#keep").get(0).checked : false
-    $("#web").get(0).checked = aiSourceWork.webEnable ? $("#web").get(0).checked : false
-    localStorage.setItem('keepStatus', $("#keep").get(0).checked);
-    localStorage.setItem('webStatus', $("#web").get(0).checked);
+    initAiSource();
 
 });
 
