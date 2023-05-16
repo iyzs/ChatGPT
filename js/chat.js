@@ -310,7 +310,7 @@ $(document).ready(function () {
 
             // worker.port.postMessage({ type: 1, sessionId: encodeURIComponent(sessionId) });
 
-            var es = new EventSource("http://43.138.141.112:3355/chatgpt/call?sessionId=" + encodeURIComponent(sessionId));
+            var es = new EventSource("https://www.lmim.chat/chatgpt/call?sessionId=" + encodeURIComponent(sessionId));
 
             var isstarted = true;
             var alltext = "";
@@ -455,7 +455,7 @@ $(document).ready(function () {
         $.ajax({
             cache: true,
             type: "POST",
-            url: "http://43.138.141.112:3355/chatgpt/setSession",
+            url: "https://www.lmim.chat/chatgpt/setSession",
             data: JSON.stringify({
                 message: prompt,
                 context: kepp ? JSON.stringify(contextarray) : '[]',
